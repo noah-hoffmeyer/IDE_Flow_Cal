@@ -5,7 +5,7 @@ import WeatherIcon from './WeatherIcon';
 export default function Timeline({ days, selectedDate, onSelectDate, weather }) {
   const todayStr = new Date().toDateString();
   return (
-    <div className="timeline-container" style={{overflowX:'auto', WebkitOverflowScrolling:'touch'}}>
+    <div className="timeline-container">
       <div className="timeline-days">
         {days.map((date) => {
           const isSelected = date.toDateString() === selectedDate.toDateString();
@@ -15,23 +15,19 @@ export default function Timeline({ days, selectedDate, onSelectDate, weather }) 
           return (
             <div
               key={date.toISOString()}
-              style={{
-                border: isSelected ? '2px solid #007bff' : isToday ? '2px solid #28a745' : '2px solid transparent',
-                background: isToday ? '#e6f9ec' : undefined,
-                cursor: 'pointer',
-                transition: 'border 0.2s',
-                minWidth: 180,
-              }}
+              className={`timeline-day${isSelected ? ' selected' : ''}${isToday ? ' today' : ''}`}
               onClick={() => onSelectDate(date)}
+              tabIndex={0}
+              aria-label={`Select ${date.toLocaleDateString()}`}
             >
               <Day date={date}>
                 {w ? (
-                  <div style={{marginTop:8,display:'flex',alignItems:'center',gap:4}}>
+                  <div className="weather-summary">
                     <WeatherIcon icon={w.icon} alt={w.text} />
-                    <span style={{fontSize:'0.9em'}}>{w.text}</span>
+                    <span className="weather-text">{w.text}</span>
                   </div>
                 ) : (
-                  <div style={{marginTop:8, color:'#bbb', fontSize:'0.9em'}}>No data</div>
+                  <div className="weather-summary no-data">No data</div>
                 )}
               </Day>
             </div>

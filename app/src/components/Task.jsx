@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function Task({ task, onEdit, onDelete, onToggleComplete, draggable, onDragStart, onDragOver, onDrop, days, onMoveDay, categories }) {
+export default function Task({ task, onEdit, onDelete, onToggleComplete, draggable, onDragStart, onDragOver, onDrop, days, onMoveDay, categories, date }) {
   const [editing, setEditing] = useState(false);
   const [editText, setEditText] = useState(task.text);
 
@@ -28,15 +28,13 @@ export default function Task({ task, onEdit, onDelete, onToggleComplete, draggab
   }
   return (
     <div
-      className={`task${task.completed ? ' completed' : ''}`}
+      className={`task${task.completed ? ' completed' : ''}${isOverdue ? ' overdue' : ''}${draggable ? ' draggable' : ''}`}
       draggable={draggable}
       onDragStart={onDragStart}
       onDragOver={onDragOver}
       onDrop={onDrop}
-      style={{
-        ...(draggable ? { cursor: 'grab' } : {}),
-        ...(isOverdue ? { border: '2px solid #e55353', background: '#fff3f3' } : {}),
-      }}
+      tabIndex={0}
+      aria-label={task.text}
     >
       {editing ? (
         <>
@@ -49,27 +47,26 @@ export default function Task({ task, onEdit, onDelete, onToggleComplete, draggab
             }}
             autoFocus
           />
-          <button onClick={handleSave}>Save</button>
-          <button onClick={handleCancel}>Cancel</button>
+          <button className="icon-btn" aria-label="Save" onClick={handleSave}>💾</button>
+          <button className="icon-btn" aria-label="Cancel" onClick={handleCancel}>✖️</button>
         </>
       ) : (
         <>
-          {cat && <span style={{display:'inline-block',width:14,height:14,background:cat.color,borderRadius:3,marginRight:6}} title={cat.name}></span>}
-          {task.time && <span style={{marginRight:8, fontWeight:'bold'}}>{task.time}</span>}
-          <span>{task.text}</span>
-          <button onClick={handleEdit}>Edit</button>
-          <button onClick={() => onDelete(task.id)}>Delete</button>
-          <button onClick={() => onToggleComplete(task.id)}>
-            {task.completed ? 'Undo' : 'Complete'}
+          {cat && <span className="cat-dot" style={{'--cat-color': cat.color}} title={cat.name}></span>}
+          {task.time && <span className="task-time">{task.time}</span>}
+          <span className="task-text">{task.text}</span>
+          <button className="icon-btn" aria-label="Edit" onClick={handleEdit}>✏️</button>
+          <button className="icon-btn" aria-label="Delete" onClick={() => onDelete(task.id)}>🗑️</button>
+          <button className="icon-btn" aria-label={task.completed ? 'Undo Complete' : 'Mark Complete'} onClick={() => onToggleComplete(task.id)}>
+            {task.completed ? '↩️' : '✔️'}
           </button>
-          {/* Move to another day (prototype, only untimed) */}
           {draggable && days && onMoveDay && (
             <select
+              className="move-select"
               value=""
               onChange={e => {
                 if (e.target.value) onMoveDay(new Date(e.target.value));
               }}
-              style={{ marginLeft: 8 }}
             >
               <option value="">Move to...</option>
               {days.map(d => (

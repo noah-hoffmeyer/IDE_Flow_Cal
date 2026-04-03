@@ -26,28 +26,28 @@ function CategoryManager({ categories, setCategories }) {
     setEditIdx(-1);
   };
   return (
-    <div>
-      <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:8}}>
+    <div className="cat-manager">
+      <div className="cat-input-row">
         <input value={name} onChange={e=>setName(e.target.value)} placeholder="Category name" />
         <input type="color" value={color} onChange={e=>setColor(e.target.value)} />
-        <button onClick={add}>Add</button>
+        <button className="icon-btn" aria-label="Add Category" onClick={add}>＋</button>
       </div>
-      <ul style={{listStyle:'none',padding:0}}>
+      <ul className="cat-list">
         {categories.map((cat, idx) => (
-          <li key={cat.id} style={{marginBottom:4,display:'flex',alignItems:'center',gap:8}}>
-            <span style={{display:'inline-block',width:16,height:16,background:cat.color,borderRadius:4,marginRight:4}}></span>
+          <li key={cat.id} className="cat-list-item">
+            <span className="cat-dot" style={{'--cat-color': cat.color}}></span>
             {editIdx === idx ? (
               <>
-                <input value={editName} onChange={e=>setEditName(e.target.value)} style={{width:90}} />
+                <input value={editName} onChange={e=>setEditName(e.target.value)} className="cat-edit-input" />
                 <input type="color" value={editColor} onChange={e=>setEditColor(e.target.value)} />
-                <button onClick={saveEdit}>Save</button>
-                <button onClick={()=>setEditIdx(-1)}>Cancel</button>
+                <button className="icon-btn" aria-label="Save" onClick={saveEdit}>💾</button>
+                <button className="icon-btn" aria-label="Cancel" onClick={()=>setEditIdx(-1)}>✖️</button>
               </>
             ) : (
               <>
-                <span>{cat.name}</span>
-                <button onClick={()=>startEdit(idx)}>Edit</button>
-                <button onClick={()=>remove(idx)}>Delete</button>
+                <span className="cat-name">{cat.name}</span>
+                <button className="icon-btn" aria-label="Edit" onClick={()=>startEdit(idx)}>✏️</button>
+                <button className="icon-btn" aria-label="Delete" onClick={()=>remove(idx)}>🗑️</button>
               </>
             )}
           </li>

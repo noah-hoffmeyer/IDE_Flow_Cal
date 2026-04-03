@@ -27,7 +27,7 @@ export default function TaskInput({ onAdd, categories }) {
         type="time"
         value={time}
         onChange={e => setTime(e.target.value)}
-        style={{ width: 110 }}
+        className="task-input-time"
         placeholder="Time (optional)"
       />
       {categories && categories.length > 0 && (

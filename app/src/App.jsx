@@ -221,18 +221,17 @@ function App() {
       <header>
         <h1 tabIndex="0" aria-label="Timeline Todo and Calendar App">Timeline Todo + Calendar</h1>
       </header>
-      <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:8}}>
+      <div className="header-controls">
         <TodayButton onClick={handleToday} />
-        <button onClick={()=>setMonthNav(m=>!m)}>Month</button>
-        <button onClick={()=>setYearNav(y=>!y)}>Year</button>
-        <form style={{display:'inline-flex',gap:4,alignItems:'center'}} onSubmit={e=>{e.preventDefault();}}>
+        <button className="nav-btn" onClick={()=>setMonthNav(m=>!m)}>Month</button>
+        <button className="nav-btn" onClick={()=>setYearNav(y=>!y)}>Year</button>
+        <form className="weather-loc-form" onSubmit={e=>{e.preventDefault();}}>
           <input
             type="number"
             step="0.0001"
             placeholder="Lat"
             value={weatherLoc?.lat || ''}
             onChange={e=>setWeatherLoc(w=>({...w,lat:parseFloat(e.target.value)}))}
-            style={{width:70}}
           />
           <input
             type="number"
@@ -240,14 +239,13 @@ function App() {
             placeholder="Lon"
             value={weatherLoc?.lon || ''}
             onChange={e=>setWeatherLoc(w=>({...w,lon:parseFloat(e.target.value)}))}
-            style={{width:70}}
           />
           <button type="button" onClick={()=>setWeatherLoc(null)}>Use My Location</button>
         </form>
       </div>
       {monthNav && (
-        <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.2)',zIndex:10,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setMonthNav(false)}>
-          <div style={{background:'#fff',padding:24,borderRadius:8}} onClick={e=>e.stopPropagation()}>
+        <div className="modal-overlay" onClick={()=>setMonthNav(false)}>
+          <div className="modal-content" onClick={e=>e.stopPropagation()}>
             <h3>Jump to Month</h3>
             <input type="month" onChange={e=>{
               const [y,m]=e.target.value.split('-');
@@ -259,8 +257,8 @@ function App() {
         </div>
       )}
       {yearNav && (
-        <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.2)',zIndex:10,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setYearNav(false)}>
-          <div style={{background:'#fff',padding:24,borderRadius:8}} onClick={e=>e.stopPropagation()}>
+        <div className="modal-overlay" onClick={()=>setYearNav(false)}>
+          <div className="modal-content" onClick={e=>e.stopPropagation()}>
             <h3>Jump to Year</h3>
             <input type="number" min="1970" max="2100" placeholder="Year" onChange={e=>{
               const y=Number(e.target.value);
@@ -271,8 +269,8 @@ function App() {
           </div>
         </div>
       )}
-      <section style={{margin:'16px 0', padding:'12px', background:'#f6f6f6', borderRadius:8}}>
-        <h3>Categories</h3>
+      <section className="section-card">
+        <div className="section-title">Categories</div>
         <CategoryManager categories={categories} setCategories={setCategories} />
       </section>
       <main>
@@ -283,9 +281,9 @@ function App() {
           weather={weather}
         />
         {weatherLoading && <div>Loading weather...</div>}
-        {weatherError && <div style={{color:'red'}}>Weather error: {weatherError}</div>}
-        <section style={{ marginTop: 24 }}>
-          <h2>Tasks for {selectedDate.toLocaleDateString()}</h2>
+        {weatherError && <div className="weather-error">Weather error: {weatherError}</div>}
+        <section className="section-card section-card-margin">
+          <div className="section-title">Tasks for {selectedDate.toLocaleDateString()}</div>
           <TaskInput onAdd={addTask} categories={categories} />
           <div>
             {tasks.map((task, idx) => {
@@ -315,7 +313,7 @@ function App() {
                 />
               );
             })}
-            {tasks.length === 0 && <div>No tasks for this day.</div>}
+            {tasks.length === 0 && <div className="empty-state">No tasks for this day.</div>}
           </div>
         </section>
       </main>
