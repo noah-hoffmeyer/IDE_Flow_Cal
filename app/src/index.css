@@ -55,6 +55,7 @@ header {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
 .today-btn {
   margin: 0.5rem 0 1rem 0;
@@ -73,4 +74,20 @@ header {
 .weather-icon {
   font-size: 1.3rem;
   margin-left: 0.3rem;
+}
+@media (max-width: 600px) {
+  .app-container {
+    padding: 0.5rem;
+  }
+  .timeline-days {
+    gap: 0.5rem;
+  }
+  .day-cell {
+    min-width: 120px;
+    padding: 0.5rem;
+  }
+  .task-input {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
 }
