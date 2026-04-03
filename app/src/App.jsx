@@ -208,7 +208,6 @@ function getDaysRange(centerDate, numDays = 7) {
   };
 
   // Tasks for selected day
-  const tasks = tasksByDate[formatDate(selectedDate)] || [];
   // Tasks for selected day, sorted: timed by time, untimed after (manual order)
   const allTasks = tasksByDate[formatDate(selectedDate)] || [];
   const timed = allTasks.filter(t => t.time).sort((a, b) => a.time.localeCompare(b.time));
