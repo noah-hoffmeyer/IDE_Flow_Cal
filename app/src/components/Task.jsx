@@ -83,5 +83,4 @@ export default function Task({ task, onEdit, onDelete, onToggleComplete, draggab
       )}
     </div>
   );
-  );
 }
