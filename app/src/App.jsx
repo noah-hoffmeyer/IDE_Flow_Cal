@@ -253,7 +253,63 @@ function getDaysRange(centerDate, numDays = 7) {
       <header>
         <h1 tabIndex="0" aria-label="Timeline Todo and Calendar App">Timeline Todo + Calendar</h1>
       </header>
-      <TodayButton onClick={handleToday} />
+      <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:8}}>
+        <TodayButton onClick={handleToday} />
+        <button onClick={()=>setMonthNav(m=>!m)}>Month</button>
+        <button onClick={()=>setYearNav(y=>!y)}>Year</button>
+        {/* Weather location input */}
+        <form style={{display:'inline-flex',gap:4,alignItems:'center'}} onSubmit={e=>{e.preventDefault();}}>
+          <input
+            type="number"
+            step="0.0001"
+            placeholder="Lat"
+            value={weatherLoc?.lat || ''}
+            onChange={e=>setWeatherLoc(w=>({...w,lat:parseFloat(e.target.value)}))}
+            style={{width:70}}
+          />
+          <input
+            type="number"
+            step="0.0001"
+            placeholder="Lon"
+            value={weatherLoc?.lon || ''}
+            onChange={e=>setWeatherLoc(w=>({...w,lon:parseFloat(e.target.value)}))}
+            style={{width:70}}
+          />
+          <button type="button" onClick={()=>setWeatherLoc(null)}>Use My Location</button>
+        </form>
+      </div>
+      {/* Month/year navigation overlays */}
+      {monthNav && (
+        <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.2)',zIndex:10,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setMonthNav(false)}>
+          <div style={{background:'#fff',padding:24,borderRadius:8}} onClick={e=>e.stopPropagation()}>
+            <h3>Jump to Month</h3>
+            <input type="month" onChange={e=>{
+              const [y,m]=e.target.value.split('-');
+              setSelectedDate(new Date(Number(y),Number(m)-1,1));
+              setMonthNav(false);
+            }} />
+            <button onClick={()=>setMonthNav(false)}>Close</button>
+          </div>
+        </div>
+      )}
+      {yearNav && (
+        <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.2)',zIndex:10,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setYearNav(false)}>
+          <div style={{background:'#fff',padding:24,borderRadius:8}} onClick={e=>e.stopPropagation()}>
+            <h3>Jump to Year</h3>
+            <input type="number" min="1970" max="2100" placeholder="Year" onChange={e=>{
+              const y=Number(e.target.value);
+              if (y>1970 && y<2100) setSelectedDate(new Date(y,0,1));
+              setYearNav(false);
+            }} />
+            <button onClick={()=>setYearNav(false)}>Close</button>
+          </div>
+        </div>
+      )}
+      {/* Category management UI (prototype) */}
+      <section style={{margin:'16px 0', padding:'12px', background:'#f6f6f6', borderRadius:8}}>
+        <h3>Categories</h3>
+        <CategoryManager categories={categories} setCategories={setCategories} />
+      </section>
       <main>
         <Timeline
           days={days}
@@ -265,117 +321,41 @@ function getDaysRange(centerDate, numDays = 7) {
         {weatherError && <div style={{color:'red'}}>Weather error: {weatherError}</div>}
         <section style={{ marginTop: 24 }}>
           <h2>Tasks for {selectedDate.toLocaleDateString()}</h2>
-          <TaskInput onAdd={addTask} />
+          <TaskInput onAdd={addTask} categories={categories} />
           <div>
-            return (
-              <div className="app-container">
-                <header>
-                  <h1>Timeline Todo + Calendar</h1>
-                </header>
-                <div style={{display:'flex',gap:8,alignItems:'center',marginBottom:8}}>
-                  <TodayButton onClick={handleToday} />
-                  <button onClick={()=>setMonthNav(m=>!m)}>Month</button>
-                  <button onClick={()=>setYearNav(y=>!y)}>Year</button>
-                  {/* Weather location input */}
-                  <form style={{display:'inline-flex',gap:4,alignItems:'center'}} onSubmit={e=>{e.preventDefault();}}>
-                    <input
-                      type="number"
-                      step="0.0001"
-                      placeholder="Lat"
-                      value={weatherLoc?.lat || ''}
-                      onChange={e=>setWeatherLoc(w=>({...w,lat:parseFloat(e.target.value)}))}
-                      style={{width:70}}
-                    />
-                    <input
-                      type="number"
-                      step="0.0001"
-                      placeholder="Lon"
-                      value={weatherLoc?.lon || ''}
-                      onChange={e=>setWeatherLoc(w=>({...w,lon:parseFloat(e.target.value)}))}
-                      style={{width:70}}
-                    />
-                    <button type="button" onClick={()=>setWeatherLoc(null)}>Use My Location</button>
-                  </form>
-                </div>
-                {/* Month/year navigation overlays */}
-                {monthNav && (
-                  <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.2)',zIndex:10,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setMonthNav(false)}>
-                    <div style={{background:'#fff',padding:24,borderRadius:8}} onClick={e=>e.stopPropagation()}>
-                      <h3>Jump to Month</h3>
-                      <input type="month" onChange={e=>{
-                        const [y,m]=e.target.value.split('-');
-                        setSelectedDate(new Date(Number(y),Number(m)-1,1));
-                        setMonthNav(false);
-                      }} />
-                      <button onClick={()=>setMonthNav(false)}>Close</button>
-                    </div>
-                  </div>
-                )}
-                {yearNav && (
-                  <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.2)',zIndex:10,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={()=>setYearNav(false)}>
-                    <div style={{background:'#fff',padding:24,borderRadius:8}} onClick={e=>e.stopPropagation()}>
-                      <h3>Jump to Year</h3>
-                      <input type="number" min="1970" max="2100" placeholder="Year" onChange={e=>{
-                        const y=Number(e.target.value);
-                        if (y>1970 && y<2100) setSelectedDate(new Date(y,0,1));
-                        setYearNav(false);
-                      }} />
-                      <button onClick={()=>setYearNav(false)}>Close</button>
-                    </div>
-                  </div>
-                )}
-                {/* Category management UI (prototype) */}
-                <section style={{margin:'16px 0', padding:'12px', background:'#f6f6f6', borderRadius:8}}>
-                  <h3>Categories</h3>
-                  <CategoryManager categories={categories} setCategories={setCategories} />
-                </section>
-                <main>
-                  <Timeline
-                    days={days}
-                    selectedDate={selectedDate}
-                    onSelectDate={setSelectedDate}
-                    weather={weather}
-                  />
-                  {weatherLoading && <div>Loading weather...</div>}
-                  {weatherError && <div style={{color:'red'}}>Weather error: {weatherError}</div>}
-                  <section style={{ marginTop: 24 }}>
-                    <h2>Tasks for {selectedDate.toLocaleDateString()}</h2>
-                    <TaskInput onAdd={addTask} categories={categories} />
-                    <div>
-                      {tasks.map((task, idx) => {
-                        const isUntimed = !task.time;
-                        return (
-                          <Task
-                            key={task.id}
-                            task={task}
-                            onEdit={editTask}
-                            onDelete={deleteTask}
-                            onToggleComplete={toggleComplete}
-                            draggable={isUntimed}
-                            onDragStart={isUntimed ? (e) => {
-                              e.dataTransfer.setData('text/plain', idx - timed.length);
-                            } : undefined}
-                            onDragOver={isUntimed ? (e) => e.preventDefault() : undefined}
-                            onDrop={isUntimed ? (e) => {
-                              e.preventDefault();
-                              const from = Number(e.dataTransfer.getData('text/plain'));
-                              const to = idx - timed.length;
-                              if (from !== to) moveUntimedTask(from, to);
-                            } : undefined}
-                            days={days}
-                            onMoveDay={isUntimed ? (newDate) => moveTaskToDay(task.id, newDate) : undefined}
-                            categories={categories}
-                            date={selectedDate}
-                          />
-                        );
-                      })}
-                      {tasks.length === 0 && <div>No tasks for this day.</div>}
-                    </div>
-                  </section>
-                </main>
-              </div>
-            );
-          }
+            {tasks.map((task, idx) => {
+              const isUntimed = !task.time;
+              return (
+                <Task
+                  key={task.id}
+                  task={task}
+                  onEdit={editTask}
+                  onDelete={deleteTask}
+                  onToggleComplete={toggleComplete}
+                  draggable={isUntimed}
+                  onDragStart={isUntimed ? (e) => {
+                    e.dataTransfer.setData('text/plain', idx - timed.length);
+                  } : undefined}
+                  onDragOver={isUntimed ? (e) => e.preventDefault() : undefined}
+                  onDrop={isUntimed ? (e) => {
+                    e.preventDefault();
+                    const from = Number(e.dataTransfer.getData('text/plain'));
+                    const to = idx - timed.length;
+                    if (from !== to) moveUntimedTask(from, to);
+                  } : undefined}
+                  days={days}
+                  onMoveDay={isUntimed ? (newDate) => moveTaskToDay(task.id, newDate) : undefined}
+                  categories={categories}
+                  date={selectedDate}
+                />
+              );
+            })}
+            {tasks.length === 0 && <div>No tasks for this day.</div>}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
 
 
 // CategoryManager component (prototype, moved outside App)
@@ -435,3 +415,9 @@ function CategoryManager({ categories, setCategories }) {
     </div>
   );
 }
+
+function App() {
+  // ...existing code...
+}
+
+export default App;
