@@ -20,25 +20,33 @@ export default function TaskInput({ onAdd, categories }) {
       <input
         type="text"
         value={text}
-        onChange={e => setText(e.target.value)}
-        placeholder="Add a new task..."
+        onChange={(e) => setText(e.target.value)}
+        placeholder="Add a task..."
+        style={{ flex: 1 }}
       />
       <input
         type="time"
         value={time}
-        onChange={e => setTime(e.target.value)}
-        className="task-input-time"
-        placeholder="Time (optional)"
+        onChange={(e) => setTime(e.target.value)}
+        style={{ width: 'auto', minWidth: '100px' }}
       />
       {categories && categories.length > 0 && (
-        <select value={categoryId} onChange={e => setCategoryId(e.target.value)}>
-          <option value="">No Category</option>
-          {categories.map(cat => (
-            <option key={cat.id} value={cat.id}>{cat.name}</option>
+        <select
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+          style={{ width: 'auto', minWidth: '120px' }}
+        >
+          <option value="">Category</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
           ))}
         </select>
       )}
-      <button type="submit">Add</button>
+      <button type="submit" style={{ width: 'auto', minWidth: '80px' }}>
+        Add
+      </button>
     </form>
   );
 }
