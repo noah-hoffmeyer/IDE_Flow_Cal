@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import MiniCalendar from './components/MiniCalendar';
 import TaskInput from './components/TaskInput';
-import Task from './components/Task';
-import CategoryManager from './components/CategoryManager';
+import CategoriesModal from './components/CategoriesModal';
+import TaskEditModal from './components/TaskEditModal';
+import YearMonthPicker from './components/YearMonthPicker';
 
 // Helper functions
 function formatDate(date) {
@@ -69,6 +70,9 @@ function App() {
   });
   const [monthNav, setMonthNav] = useState(false);
   const [yearNav, setYearNav] = useState(false);
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  const [showYearMonthPicker, setShowYearMonthPicker] = useState(false);
 
   // Save to localStorage when state changes
   useEffect(() => {
@@ -241,9 +245,19 @@ function App() {
         <button className="nav-btn" onClick={() => setMonthNav(true)}>
           Month
         </button>
-        <button className="nav-btn" onClick={() => setYearNav(true)}>
-          Year
+        <button className="nav-btn" onClick={() => setShowYearMonthPicker(true)}>
+          Date
         </button>
+        <button className="nav-btn" onClick={() => setShowCategoriesModal(true)}>
+          Categories
+        </button>
+
+        {showYearMonthPicker && (
+          <YearMonthPicker
+            onSelect={setSelectedDate}
+            onClose={() => setShowYearMonthPicker(false)}
+          />
+        )}
 
         {monthNav && (
           <div className="modal-overlay" onClick={() => setMonthNav(false)}>
@@ -262,25 +276,12 @@ function App() {
           </div>
         )}
 
-        {yearNav && (
-          <div className="modal-overlay" onClick={() => setYearNav(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <h3>Jump to Year</h3>
-              <input
-                type="number"
-                min="1970"
-                max="2100"
-                placeholder="Year"
-                onChange={(e) => {
-                  const y = Number(e.target.value);
-                  if (y > 1970 && y < 2100) {
-                    setSelectedDate(new Date(y, 0, 1));
-                  }
-                }}
-              />
-              <button onClick={() => setYearNav(false)}>Close</button>
-            </div>
-          </div>
+        {showCategoriesModal && (
+          <CategoriesModal
+            categories={categories}
+            setCategories={setCategories}
+            onClose={() => setShowCategoriesModal(false)}
+          />
         )}
 
         <form
@@ -320,16 +321,11 @@ function App() {
       </div>
 
       <main>
-        {/* Left Sidebar - Calendar & Categories */}
+        {/* Left Sidebar - Calendar */}
         <div className="sidebar">
           <div className="sidebar-section">
             <span className="sidebar-title">Calendar</span>
             <MiniCalendar selectedDate={selectedDate} onSelectDate={setSelectedDate} />
-          </div>
-
-          <div className="sidebar-section">
-            <span className="sidebar-title">Categories</span>
-            <CategoryManager categories={categories} setCategories={setCategories} />
           </div>
         </div>
 
@@ -364,12 +360,29 @@ function App() {
                     />
                   )}
                   <div className="task-actions">
-                    <button onClick={() => deleteTask(task.id)}>Delete</button>
+                    <button onClick={() => setEditingTask(task)} className="task-action-btn edit">
+                      Edit
+                    </button>
+                    <button onClick={() => deleteTask(task.id)} className="task-action-btn delete">
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))
             )}
           </div>
+
+          {editingTask && (
+            <TaskEditModal
+              task={editingTask}
+              categories={categories}
+              onSave={(updatedTask) => {
+                editTask(updatedTask);
+                setEditingTask(null);
+              }}
+              onClose={() => setEditingTask(null)}
+            />
+          )}
         </div>
 
         {/* Right Sidebar - Weather & Info */}
