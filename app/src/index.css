@@ -47,22 +47,31 @@ h1 {
   color: #1f2937;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  padding: 0.6rem 1.2rem;
+  padding: 0.75rem 1.5rem;
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-btn:hover {
   background: #f3f4f6;
-  border-color: #9ca3af;
+  border-color: #6366f1;
+  color: #6366f1;
 }
 
 .nav-btn:focus {
   outline: none;
   border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+.nav-btn:active {
+  background: #e0e7ff;
 }
 
 .weather-loc-form {
@@ -73,14 +82,19 @@ h1 {
 }
 
 .weather-loc-form input {
-  width: 100px;
-  padding: 0.6rem 0.8rem;
+  width: 120px;
+  padding: 0.75rem 1rem;
   font-size: 0.9rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  min-height: 44px;
 }
 
 .weather-loc-form button {
-  padding: 0.6rem 1rem;
+  padding: 0.75rem 1.25rem;
   font-size: 0.9rem;
+  min-height: 44px;
+  font-weight: 600;
 }
 
 main {
@@ -182,6 +196,9 @@ main {
   font-size: 0.95rem;
   font-family: inherit;
   background: #fff;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .task-input input::placeholder {
@@ -202,6 +219,8 @@ main {
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
+  min-height: 44px;
+  padding: 0.75rem 1.2rem;
 }
 
 .task-input button:hover {
@@ -601,6 +620,7 @@ main {
   .nav-btn {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+    min-height: 44px;
   }
 
   .main-content {
@@ -648,8 +668,9 @@ main {
   }
 
   .nav-btn {
-    padding: 0.45rem 0.9rem;
+    padding: 0.55rem 1rem;
     font-size: 0.85rem;
+    min-height: 44px;
   }
 
   .main-content {
@@ -987,6 +1008,9 @@ button {
   font-size: 0.95rem;
   font-family: inherit;
   transition: border 0.2s;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
 
 .modal-input:focus {
@@ -1002,7 +1026,7 @@ button {
   font-size: 0.95rem;
   font-family: inherit;
   resize: vertical;
-  min-height: 100px;
+  min-height: 120px;
 }
 
 .modal-textarea:focus {
@@ -1019,6 +1043,7 @@ button {
   font-family: inherit;
   background: #fff;
   cursor: pointer;
+  min-height: 44px;
 }
 
 .modal-select:focus {
@@ -1125,6 +1150,10 @@ button {
   transition: all 0.2s;
   background: #fff;
   color: #1f2937;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .category-action-btn.edit:hover {
@@ -1320,6 +1349,10 @@ button {
   cursor: pointer;
   transition: all 0.2s;
   font-size: 0.85rem;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .year-btn.active {
@@ -1354,6 +1387,10 @@ button {
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .month-btn.active {
