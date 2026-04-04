@@ -1,32 +1,28 @@
-# Timeline Todo + Calendar
+# Timeline Todo + Calendar (App)
 
-A minimal, modern prototype for a timeline-focused todo + calendar app with weather integration.
+Frontend application for IDE Flow Calendar.
 
-## Features
-- Horizontal scrolling timeline of days (main workspace)
-- Add, edit, delete, and complete tasks for each day
-- Timed tasks auto-sort; untimed tasks are manually ordered (drag-and-drop)
-- Move untimed tasks across days
-- Color-coded categories for tasks (create, edit, delete, assign)
-- Overdue incomplete tasks highlighted
-- Month/year navigation for quick jumps
-- Weather icons for today and next few days (NWS API, user location or manual lat/lon)
-- All data stored in localStorage (no auth)
-- Responsive, accessible, and fast
+For full project onboarding and architecture docs, start at the repository root README:
+- `../README.md`
+- `../docs/setup.md`
+- `../docs/technical/architecture.md`
 
-## Usage
-1. Run `npm install` in the `app` folder
-2. Run `npm run dev` in the `app` folder
-3. Open the app in your browser (default: http://localhost:5173)
+## App Features
 
-## Notes
-- This is a prototype: code and UI are intentionally simple and easy to extend.
-- No backend, no authentication, no cloud sync.
-- Weather data from the US National Weather Service (https://api.weather.gov)
+- Horizontal timeline calendar workspace
+- Day-based task creation, editing, deletion, and completion
+- Timed task auto-sorting and untimed task manual ordering
+- Drag-and-drop task movement across days
+- Color-coded category management
+- Overdue task highlighting
+- Month/year navigation controls
+- Weather icons for near-term forecast days
 
-## Screenshots
-_Add your screenshots here._
+## Run Locally
 
----
+```bash
+npm install
+npm run dev
+```
 
-MIT License
+Default local URL: `http://localhost:5173`
